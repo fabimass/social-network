@@ -5,10 +5,13 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import User
+from .forms import NewPostForm
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {
+        "newpost": NewPostForm()
+    })
 
 
 def login_view(request):
@@ -61,3 +64,11 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def new_post(request):
+    if request.method == "POST":
+        form = NewPostForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            return HttpResponseRedirect(reverse("index"))
