@@ -4,15 +4,29 @@
 {% block body %}
 
     {% if user.is_authenticated %}
-    <form action="{% url 'newpost' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ newpost }}
-        </div>
-        <input type="submit" value="Post" class="btn btn-primary">
-        <span id="charsleft" class="float-right text-secondary"></span>
-    </form>
+        <form action="{% url 'newpost' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ newpost }}
+            </div>
+            <input type="submit" value="Post" class="btn btn-primary">
+            <span id="charsleft" class="float-right text-secondary"></span>
+        </form>
     {% endif %}
+
+    <hr />
+
+    {% for post in posts %} 
+        <div class="card mx-1 my-3 px-5 py-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.posted_by }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ post.date_posted }}</h6>
+                <p class="card-text">{{ post.content }}</p>
+                <span>♡ 0</span>
+                <a href="#" class="card-link float-right">Edit</a>
+            </div>
+        </div>
+    {% endfor %}
 
 {% endblock %}
 

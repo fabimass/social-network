@@ -10,8 +10,11 @@ from .forms import NewPostForm
 
 
 def index(request):
+    posts = Post.objects.all()
+
     return render(request, "network/index.html", {
-        "newpost": NewPostForm()
+        "newpost": NewPostForm(),
+        "posts": posts
     })
 
 
