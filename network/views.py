@@ -9,8 +9,12 @@ from .forms import NewPostForm
 
 
 def index(request):
+    # Inject the user id in the form (hidden)
+    newpost_form = NewPostForm()
+    newpost_form.fields['user'].initial = request.user.id
+
     return render(request, "network/index.html", {
-        "newpost": NewPostForm()
+        "newpost": newpost_form
     })
 
 

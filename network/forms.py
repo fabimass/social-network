@@ -5,3 +5,4 @@ class NewPostForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'Add new post',
         'style': 'height: 120px'}))
+    user = forms.IntegerField(required=True, widget=forms.HiddenInput())
