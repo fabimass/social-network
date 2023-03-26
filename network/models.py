@@ -14,3 +14,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.id}: {self.posted_by} on {self.date_posted}"
+    
+    def is_liked_by(self, user):
+        return self.liked_by.filter(id=user.id).exists()

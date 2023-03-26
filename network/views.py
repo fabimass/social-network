@@ -9,8 +9,13 @@ from .models import User, Post
 from .forms import NewPostForm
 
 
-def index(request):
-    posts = Post.objects.all()
+def index(request): 
+    posts = []
+    for post in Post.objects.all():
+        posts.append({
+            "data": post,
+            "liked": post.is_liked_by(request.user)
+        })
 
     return render(request, "network/index.html", {
         "newpost": NewPostForm(),
