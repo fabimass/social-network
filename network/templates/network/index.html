@@ -3,6 +3,7 @@
 
 {% block body %}
 
+    {% if user.is_authenticated %}
     <form action="{% url 'newpost' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -11,6 +12,7 @@
         <input type="submit" value="Post" class="btn btn-primary">
         <span id="charsleft" class="float-right text-secondary"></span>
     </form>
+    {% endif %}
 
 {% endblock %}
 
