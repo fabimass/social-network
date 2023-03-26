@@ -22,8 +22,14 @@
                 <h5 class="card-title">{{ post.data.posted_by }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.data.date_posted }}</h6>
                 <p class="card-text">{{ post.data.content }}</p>
-                <span class="likes" id="likes-{{ post.data.id }}">♡ 0</span>
-                <span>{{ post.liked }}</span>
+                <span class="likes" id="likes-{{ post.data.id }}">
+                    {% if post.liked %}
+                        &#10084;
+                    {% else %}
+                        &#9825;
+                    {% endif %} 
+                    0 
+                </span>
                 <a href="#" class="card-link float-right">Edit</a>
             </div>
         </div>
