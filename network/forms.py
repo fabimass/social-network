@@ -7,6 +7,5 @@ class NewPostForm(forms.Form):
         'id': 'newpost',
         'placeholder': 'Add new post',
         'style': 'height: 120px'}))
-    user = forms.IntegerField(required=True, widget=forms.HiddenInput())
     max_length = forms.IntegerField(required=False, initial=NEW_POST_LENGTH, widget=forms.HiddenInput(attrs={
         'id': 'maxlength'})) # This is used to expose the value of the max length setting for the javascript

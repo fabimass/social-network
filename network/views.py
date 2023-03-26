@@ -3,18 +3,15 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from datetime import datetime
 
-from .models import User
+from .models import User, Post
 from .forms import NewPostForm
 
 
 def index(request):
-    # Inject the user id in the form (hidden)
-    newpost_form = NewPostForm()
-    newpost_form.fields['user'].initial = request.user.id
-
     return render(request, "network/index.html", {
-        "newpost": newpost_form
+        "newpost": NewPostForm()
     })
 
 
@@ -74,5 +71,10 @@ def new_post(request):
     if request.method == "POST":
         form = NewPostForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            return HttpResponseRedirect(reverse("index"))
+            newpost = Post(
+                content=form.cleaned_data["post"], 
+                posted_by=request.user,
+                date_posted=datetime.now())
+            newpost.save()
+            
+    return HttpResponseRedirect(reverse("index"))
