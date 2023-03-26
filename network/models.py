@@ -17,3 +17,6 @@ class Post(models.Model):
     
     def is_liked_by(self, user):
         return self.liked_by.filter(id=user.id).exists()
+    
+    def likes_count(self):
+        return len(self.liked_by.all())
