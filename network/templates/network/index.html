@@ -22,7 +22,7 @@
                 <h5 class="card-title">{{ post.data.posted_by }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.data.date_posted }}</h6>
                 <p class="card-text">{{ post.data.content }}</p>
-                <span class="likes" id="likes-{{ post.data.id }}">
+                <span class="likes" id={{ post.data.id }} status={{ post.liked }}>
                     {% if post.liked %}
                         &#10084;
                     {% else %}
@@ -39,6 +39,7 @@
 
 {% block script %}
     {% if user.is_authenticated %}
-        <script src="{% static 'network/index.js' %}"></script>
+    <script>var CSRF_TOKEN = '{{ csrf_token }}';</script>    
+    <script src="{% static 'network/index.js' %}"></script>
     {% endif %}
 {% endblock %}

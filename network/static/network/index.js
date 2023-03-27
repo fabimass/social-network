@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#newpost').addEventListener('input', () => calculate_remaining_chars());
 
     // Event listener for likes
-    document.querySelectorAll('.likes').forEach((element) => element.addEventListener('click', (event) => like(event.target.id)));
+    document.querySelectorAll('.likes').forEach((element) => element.addEventListener('click', (event) => like(event.target)));
     
 });
 
@@ -17,6 +17,18 @@ const calculate_remaining_chars = () => {
     span.innerHTML = `${remaining_chars} characters left`;
 }
 
-const like = (id) => {
-    console.log(id);
+const like = (target) => {
+
+    fetch(`likes/${target.id}`, {
+        method: 'POST',
+        headers: {
+            "X-CSRFToken": CSRF_TOKEN
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        
+        // Update likes count in the page
+        target.innerHTML = `${(result.status) ? '&#10084;' : '&#9825;'} ${result.count}` 
+    });
 }

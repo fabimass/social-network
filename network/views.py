@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
@@ -86,3 +86,20 @@ def new_post(request):
             newpost.save()
             
     return HttpResponseRedirect(reverse("index"))
+
+
+def likes(request, postid):
+    post = Post.objects.get(id=postid)
+    print(post)
+    
+    if request.method == "POST":
+        # Toggle the like status
+        if post.is_liked_by(request.user):
+            post.liked_by.remove(request.user)
+        else:
+            post.liked_by.add(request.user)
+
+    return(JsonResponse({
+        "status": post.is_liked_by(request.user),
+        "count": post.likes_count()}, 
+        status=200))
