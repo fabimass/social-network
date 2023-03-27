@@ -11,7 +11,7 @@ from .forms import NewPostForm
 
 def index(request): 
     posts = []
-    for post in Post.objects.all():
+    for post in Post.objects.all().order_by('-date_posted'):
         posts.append({
             "data": post,
             "liked": post.is_liked_by(request.user)
