@@ -19,7 +19,7 @@
     {% for post in posts %} 
         <div class="card mx-1 my-3 px-5 py-3">
             <div class="card-body">
-                <h5 class="card-title">{{ post.data.posted_by }}</h5>
+                <h5 class="card-title"><a href="{% url 'userpage' post.data.posted_by %}">{{ post.data.posted_by }}</a></h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.data.date_posted }}</h6>
                 <p class="card-text">{{ post.data.content }}</p>
                 <span class="likes" id={{ post.data.id }} status={{ post.liked }}>

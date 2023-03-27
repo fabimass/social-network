@@ -103,3 +103,10 @@ def likes(request, postid):
         "status": post.is_liked_by(request.user),
         "count": post.likes_count()}, 
         status=200))
+
+
+def user_page(request, username): 
+    
+    return render(request, "network/user.html", {
+        "username": username 
+    })
