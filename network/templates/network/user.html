@@ -1,11 +1,22 @@
-{% extends "network/layout.html" %}
+{% extends "network/posts.html" %}
 {% load static %}
 
-{% block body %}
+{% block custom %}
+   
+    <h2>{{ username }}</h2>
+    <uL>
+        <li>Followers: <span id="followers">0</span></li>
+        <li>Following: <span id="following">0</span></li>
+    </uL>
+        
+    {% if user.username != username and user.is_authenticated %}
+        <button class="btn btn-primary" id="follow"></button>
+    {% endif %}
 
-    user page: {{ username }}
+    <hr />
 
 {% endblock %}
 
-{% block script %}
+{% block morescripts %}
+    <script src="{% static 'network/follow.js' %}"></script>    
 {% endblock %}

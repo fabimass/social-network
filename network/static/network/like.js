@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 const like = (target) => {
-
-    fetch(`likes/${target.id}`, {
+    
+    fetch(`${window.location.origin}/likes/${target.id}`, {
         method: 'POST',
         headers: {
             "X-CSRFToken": CSRF_TOKEN

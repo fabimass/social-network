@@ -7,19 +7,14 @@ from datetime import datetime
 
 from .models import User, Post
 from .forms import NewPostForm
+from .utils import addLikesInfo
 
 
 def index(request): 
-    posts = []
-    for post in Post.objects.all().order_by('-date_posted'):
-        posts.append({
-            "data": post,
-            "liked": post.is_liked_by(request.user)
-        })
 
     return render(request, "network/index.html", {
         "newpost": NewPostForm(),
-        "posts": posts
+        "posts": addLikesInfo(Post.objects.all().order_by('-date_posted'), request.user)
     })
 
 
@@ -90,7 +85,6 @@ def new_post(request):
 
 def likes(request, postid):
     post = Post.objects.get(id=postid)
-    print(post)
     
     if request.method == "POST":
         # Toggle the like status
@@ -108,5 +102,24 @@ def likes(request, postid):
 def user_page(request, username): 
     
     return render(request, "network/user.html", {
-        "username": username 
+        "username": username,
+        "posts": addLikesInfo(User.objects.get(username=username).posts_made.all().order_by('-date_posted'), request.user) 
     })
+
+
+def follow(request, username): 
+
+    user = User.objects.get(username=username)
+
+    if request.method == "POST":
+        # Toggle the follow status
+        if user.is_followed_by(request.user):
+            user.followers.remove(request.user)
+        else:
+            user.followers.add(request.user)
+   
+    return(JsonResponse({
+        "following": user.following.all().count(),
+        "followers": user.followers.all().count(),
+        "currently_following": user.is_followed_by(request.user)}, 
+        status=200))

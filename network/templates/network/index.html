@@ -1,7 +1,7 @@
-{% extends "network/layout.html" %}
+{% extends "network/posts.html" %}
 {% load static %}
 
-{% block body %}
+{% block custom %}
 
     {% if user.is_authenticated %}
         <form action="{% url 'newpost' %}" method="post">
@@ -12,34 +12,13 @@
             <input type="submit" value="Post" class="btn btn-primary">
             <span id="charsleft" class="float-right text-secondary"></span>
         </form>
+        <hr />
     {% endif %}
-
-    <hr />
-
-    {% for post in posts %} 
-        <div class="card mx-1 my-3 px-5 py-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="{% url 'userpage' post.data.posted_by %}">{{ post.data.posted_by }}</a></h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ post.data.date_posted }}</h6>
-                <p class="card-text">{{ post.data.content }}</p>
-                <span class="likes" id={{ post.data.id }} status={{ post.liked }}>
-                    {% if post.liked %}
-                        &#10084;
-                    {% else %}
-                        &#9825;
-                    {% endif %} 
-                    {{ post.data.likes_count }}
-                </span>
-                <a href="#" class="card-link float-right">Edit</a>
-            </div>
-        </div>
-    {% endfor %}
 
 {% endblock %}
 
-{% block script %}
-    {% if user.is_authenticated %}
-    <script>var CSRF_TOKEN = '{{ csrf_token }}';</script>    
-    <script src="{% static 'network/index.js' %}"></script>
+{% block morescripts %}
+    {% if user.is_authenticated %} 
+    <script src="{% static 'network/newpost.js' %}"></script>
     {% endif %}
 {% endblock %}
