@@ -1,18 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    fetch(`${window.location.href}/follow`, {
+    const username = document.querySelector('h2').innerHTML
+
+    fetch(`/follow/${username}`, {
         method: 'GET'
     })
     .then(response => response.json())
     .then(result => updateStatus(result))
-    .then(() => document.querySelector('#follow')?.addEventListener('click', () => follow()));
+    .then(() => document.querySelector('#follow')?.addEventListener('click', () => follow(username)));
     
 });
 
 
-const follow = () => {
+const follow = (username) => {
     
-    fetch(`${window.location.href}/follow`, {
+    fetch(`/follow/${username}`, {
         method: 'POST',
         headers: {
             "X-CSRFToken": CSRF_TOKEN
