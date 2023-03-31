@@ -14,7 +14,7 @@ from .utils import addLikesInfo
 
 def index(request): 
     objects = Post.objects.all().order_by('-date_posted')
-    pages = Paginator(objects, 2)
+    pages = Paginator(objects, 10)
     current_page = int(request.GET.get("page", 1))
 
     return render(request, "network/index.html", {
@@ -126,7 +126,7 @@ def likes(request, postid):
 def user_page(request, username): 
 
     objects = User.objects.get(username=username).posts_made.all().order_by('-date_posted')
-    pages = Paginator(objects, 2)
+    pages = Paginator(objects, 10)
     current_page = int(request.GET.get("page", 1))
     
     return render(request, "network/user.html", {
@@ -166,7 +166,7 @@ def following(request):
         posts = posts | user_followed.posts_made.all()
 
     objects = posts.order_by('-date_posted')
-    pages = Paginator(objects, 2)
+    pages = Paginator(objects, 10)
     current_page = int(request.GET.get("page", 1))
 
     return render(request, "network/index.html", {
