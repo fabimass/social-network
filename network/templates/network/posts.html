@@ -11,7 +11,9 @@
             <div class="card-body">
                 <h5 class="card-title"><a href="{% url 'userpage' post.data.posted_by %}">{{ post.data.posted_by }}</a></h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.data.date_posted }}</h6>
-                <p class="card-text">{{ post.data.content }}</p>
+                <div class="mb-4 mt-4" id="post-{{ post.data.id }}"">
+                    <p class="card-text">{{ post.data.content }}</p>
+                </div>
                 <span class="likes" id={{ post.data.id }} status={{ post.liked }}>
                     {% if post.liked %}
                         &#10084;
@@ -20,8 +22,10 @@
                     {% endif %} 
                     {{ post.data.likes_count }}
                 </span>
-                <a href="#" class="card-link float-right">Edit</a>
-            </div>
+                {% if user == post.data.posted_by %}
+                    <button class="btn btn-primary float-right edit" id={{ post.data.id }}>Edit</button>
+                {% endif %}
+                </div>
         </div>
     {% endfor %}
 
@@ -30,6 +34,7 @@
 {% block script %}
     {% if user.is_authenticated %} 
         <script src="{% static 'network/like.js' %}"></script>
+        <script src="{% static 'network/edit.js' %}"></script>
     {% endif %}
     {% block morescripts %}
     {% endblock %}

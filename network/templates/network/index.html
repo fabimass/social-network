@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block morescripts %}
-    {% if user.is_authenticated %} 
+    {% if user.is_authenticated and newpost %} 
     <script src="{% static 'network/newpost.js' %}"></script>
     {% endif %}
 {% endblock %}

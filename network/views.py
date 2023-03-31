@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
+import json
 
 from .models import User, Post
 from .forms import NewPostForm
@@ -83,6 +84,20 @@ def new_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 
+def single_post(request, postid):
+    post = Post.objects.get(id=postid)
+    
+    if request.method == "PUT":
+        new_content = json.loads(request.body)["content"]
+        post.content = new_content
+        post.save()
+
+    return(JsonResponse({
+        "content": post.content,
+        "poster": post.posted_by.username}, 
+        status=200))
+
+
 def likes(request, postid):
     post = Post.objects.get(id=postid)
     
@@ -133,6 +148,5 @@ def following(request):
         posts = posts | user_followed.posts_made.all()
 
     return render(request, "network/index.html", {
-       
         "posts": addLikesInfo(posts.order_by('-date_posted'), request.user)
     })
