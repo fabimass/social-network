@@ -124,10 +124,19 @@ def likes(request, postid):
 
 
 def user_page(request, username): 
+
+    objects = User.objects.get(username=username).posts_made.all().order_by('-date_posted')
+    pages = Paginator(objects, 2)
+    current_page = int(request.GET.get("page", 1))
     
     return render(request, "network/user.html", {
         "username": username,
-        "posts": addLikesInfo(User.objects.get(username=username).posts_made.all().order_by('-date_posted'), request.user) 
+        "posts": addLikesInfo(pages.page(current_page).object_list, request.user),
+        "pages": range(1, pages.num_pages+1),
+        "current_page": current_page,
+        "prev_page": current_page-1,
+        "next_page": current_page+1,
+        "last_page": pages.num_pages 
     })
 
 
@@ -156,6 +165,15 @@ def following(request):
     for user_followed in request.user.following.all():
         posts = posts | user_followed.posts_made.all()
 
+    objects = posts.order_by('-date_posted')
+    pages = Paginator(objects, 2)
+    current_page = int(request.GET.get("page", 1))
+
     return render(request, "network/index.html", {
-        "posts": addLikesInfo(posts.order_by('-date_posted'), request.user)
+        "posts": addLikesInfo(pages.page(current_page).object_list, request.user),
+        "pages": range(1, pages.num_pages+1),
+        "current_page": current_page,
+        "prev_page": current_page-1,
+        "next_page": current_page+1,
+        "last_page": pages.num_pages
     })
