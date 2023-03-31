@@ -4,15 +4,17 @@
 {% block custom %}
 
     {% if user.is_authenticated %}
-        <form action="{% url 'newpost' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ newpost }}
-            </div>
-            <input type="submit" value="Post" class="btn btn-primary">
-            <span id="charsleft" class="float-right text-secondary"></span>
-        </form>
-        <hr />
+        {% if newpost %}
+            <form action="{% url 'newpost' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ newpost }}
+                </div>
+                <input type="submit" value="Post" class="btn btn-primary">
+                <span id="charsleft" class="float-right text-secondary"></span>
+            </form>
+            <hr />
+        {% endif %}  
     {% endif %}
 
 {% endblock %}

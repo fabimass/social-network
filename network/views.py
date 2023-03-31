@@ -123,3 +123,16 @@ def follow(request, username):
         "followers": user.followers.all().count(),
         "currently_following": user.is_followed_by(request.user)}, 
         status=200))
+
+
+def following(request): 
+
+    posts = Post.objects.none()
+
+    for user_followed in request.user.following.all():
+        posts = posts | user_followed.posts_made.all()
+
+    return render(request, "network/index.html", {
+       
+        "posts": addLikesInfo(posts.order_by('-date_posted'), request.user)
+    })
