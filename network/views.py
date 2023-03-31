@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 from datetime import datetime
 import json
 
@@ -12,10 +13,18 @@ from .utils import addLikesInfo
 
 
 def index(request): 
+    objects = Post.objects.all().order_by('-date_posted')
+    pages = Paginator(objects, 2)
+    current_page = int(request.GET.get("page", 1))
 
     return render(request, "network/index.html", {
         "newpost": NewPostForm(),
-        "posts": addLikesInfo(Post.objects.all().order_by('-date_posted'), request.user)
+        "posts": addLikesInfo(pages.page(current_page).object_list, request.user),
+        "pages": range(1, pages.num_pages+1),
+        "current_page": current_page,
+        "prev_page": current_page-1,
+        "next_page": current_page+1,
+        "last_page": pages.num_pages
     })
 
 
